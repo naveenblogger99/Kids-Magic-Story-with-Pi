@@ -1,1 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>📚 Kids Magic Story with Pi - Hindi & English</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
+    body {
+      background: linear-gradient(145deg, #0f2b3d 0%, #1a1a2e 100%);
+      font-family: 'Comic Neue', 'Comic Sans MS', 'Segoe UI Emoji', cursive, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    .android-app {
+      max-width: 450px;
+      width: 100%;
+      height: 100vh;
+      max-height: 800px;
+      background: linear-gradient(135deg, #fff8e7 0%, #fef0d8 100%);
+      border-radius: 38px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      margin: 12px;
+      border: 3px solid #ffd966;
+    }
+
+    .status-bar {
+      background: #ffefcf;
+      padding: 12px 20px 6px 20px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: #b45f1b;
+      border-bottom: 2px solid #ffd966;
+    }
+
+    .app-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 16px 8px 16px;
+      scroll-behavior: smooth;
+    }
+
+    .cover-card {
+      background: linear-gradient(135deg, #ffd89b 0%, #ffb347 100%);
+      border-radius: 32px;
+      padding: 28px 16px;
+      text-align: center;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      border: 2px solid #fff0c0;
+    }
+    .cover-card h1 { 
+      font-size: 2rem; 
+      color: white; 
+      text-shadow: 4px 4px 0 #c45d1a;
+      letter-spacing: 2px;
+    }
+    .cover-card .pi-logo {
+      font-size: 3.5rem;
+      margin: 10px 0;
+      background: white;
+      display: inline-block;
+      padding: 10px 25px;
+      border-radius: 60px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .big-emoji { font-size: 4rem; margin: 16px 0; }
+    .start-btn {
+      background: #ffb347;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 60px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: white;
+      margin-top: 16px;
+      box-shadow: 0 6px 0 #c45d1a;
+      width: 80%;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .start-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #c45d1a; }
+
+    .main-ui { display: none; flex-direction: column; height: 100%; }
+    .app-top-bar {
+      background: #fff8e7;
+      border-radius: 28px;
+      padding: 8px 12px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .book-title-small {
+      background: #ffd966;
+      padding: 4px 12px;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      font-weight: bold;
+      color: #5a3a1a;
+    }
+    .story-title { font-size: 0.8rem; font-weight: bold; background: #ffefcf; padding: 5px 10px; border-radius: 40px; color: #b45f1b; }
+    .story-dropdown select {
+      background: #ffb347;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 40px;
+      color: white;
+      font-weight: bold;
+      font-family: inherit;
+      font-size: 0.7rem;
+    }
+    
+    .lang-switch-simple {
+      display: flex;
+      gap: 8px;
+      background: #ffefcf;
+      border-radius: 40px;
+      padding: 4px 8px;
+    }
+    .lang-switch-simple button {
+      background: #ffb347;
+      border: none;
+      border-radius: 30px;
+      padding: 6px 16px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .lang-switch-simple button.active {
+      background: #e67e22;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transform: scale(1.02);
+    }
+    .lang-switch-simple button:active { transform: scale(0.98); }
+
+    .icon-group { display: flex; gap: 8px; align-items: center; }
+    .icon-btn { background: #ffefcf; border: none; border-radius: 30px; padding: 6px 12px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
+
+    .image-section { background: #fff2df; border-radius: 32px; padding: 12px; margin-bottom: 12px; }
+    .story-img { width: 100%; max-height: 200px; object-fit: contain; border-radius: 28px; background: #fff9ed; }
+    .action-row { display: flex; justify-content: center; gap: 16px; margin-top: 12px; }
+    .action-btn {
+      background: #6fbf4c; border: none; padding: 10px 18px; border-radius: 50px; font-weight: bold; color: white;
+      font-size: 0.85rem; box-shadow: 0 3px 0 #3e7227; min-width: 85px; cursor: pointer;
+    }
+    .action-btn:active { transform: translateY(2px); }
+    .read-again { background: #ff8c69; box-shadow: 0 3px 0 #bb5e3a; }
+
+    .story-card { background: #fffef5; border-radius: 32px; padding: 16px; margin-bottom: 12px; box-shadow: inset 0 0 0 2px #ffe8b6; }
+    .story-text { font-size: 0.95rem; line-height: 1.45; color: #2d3e2b; }
+    .story-text p { margin: 6px 0; }
+    
+    .moral-card {
+      background: linear-gradient(135deg, #ffe8b6, #ffd89a);
+      border-radius: 28px;
+      padding: 14px 16px;
+      margin: 12px 0;
+      border-left: 8px solid #ffb347;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    @keyframes glow {
+      from { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+      to { box-shadow: 0 4px 20px rgba(255, 180, 71, 0.4); }
+    }
+    .moral-title {
+      font-weight: bold;
+      color: #c45d1a;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .moral-text {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #5a3a1a;
+      line-height: 1.4;
+      font-style: italic;
+    }
+
+    .draw-card { background: #fef3df; border-radius: 32px; padding: 12px; margin-bottom: 12px; }
+    .draw-header { font-weight: bold; color: #e67e22; margin-bottom: 6px; font-size: 0.8rem; }
+    canvas { background: white; border-radius: 24px; width: 100%; height: auto; cursor: crosshair; border: 2px solid #ffcd94; touch-action: none; }
+    .draw-tools { display: flex; justify-content: center; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+    .draw-tool-btn { background: #ffb347; border: none; padding: 6px 14px; border-radius: 40px; font-weight: bold; color: white; font-size: 0.7rem; box-shadow: 0 2px 0 #c45d1a; cursor: pointer; }
+
+    .page-indicator { text-align: center; background: #ffecb3; padding: 5px 12px; border-radius: 40px; width: fit-content; margin: 8px auto; font-weight: bold; font-size: 0.7rem; }
+    .auto-read-badge { text-align: center; font-size: 0.6rem; color: #2ecc71; background: #e8f5e9; padding: 4px 12px; border-radius: 30px; width: fit-content; margin: 5px auto; font-weight: bold; }
+    .bottom-nav { background: #fff8e7; display: flex; justify-content: space-around; padding: 8px 16px 14px; border-top: 2px solid #ffe0b0; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.65rem; color: #b98f54; font-weight: bold; background: none; border: none; cursor: pointer; }
+    .nav-emoji { font-size: 1.4rem; }
+    footer { font-size: 0.55rem; text-align: center; padding: 6px; color: #bc8a4a; }
+    @media (max-width: 480px) { .action-btn { padding: 7px 12px; min-width: 70px; font-size: 0.75rem; } }
+  </style>
+</head>
+<body>
+<div class="android-app">
+  <div class="status-bar"><span>📱 10:28</span><span>🔋 98% 📶</span></div>
+  <div class="app-content" id="appContent">
+    <div id="coverView" class="cover-card">
+      <div class="pi-logo">🐘✨π✨🦄</div>
+      <h1>✨ Kids Magic Story with Pi ✨</h1>
+      <p style="margin-top:12px; color:white; font-weight:bold; background:#e67e22cc; display:inline-block; padding:8px 20px; border-radius:60px;">Magical Tales • Auto-Read • Moral Lessons</p>
+      <button id="androidStartBtn" class="start-btn">🌟 Enter the Magic World 🌟</button>
+      <div style="margin-top:20px; font-size:0.7rem; color:#5a3a1a;">👇 5 Magical Stories with Beautiful Morals!</div>
+    </div>
+
+    <div id="mainAppUi" class="main-ui">
+      <div class="app-top-bar">
+        <div class="book-title-small">📖 Kids Magic Story with Pi</div>
+        <div class="story-title" id="mobileStoryTitle">🐘 Kind Elephant</div>
+        <div class="story-dropdown"><select id="mobileStorySelect">
+          <option value="0">🐘 Kind Elephant</option><option value="1">🦁 Brave Lion</option>
+          <option value="2">🐉 Friendly Dragon</option><option value="3">🐢 Speedy Turtle</option>
+          <option value="4">🦄 Rainbow Unicorn</option>
+        </select></div>
+        <div class="icon-group">
+          <div class="lang-switch-simple">
+            <button id="langEnBtn" class="active">🇬🇧 English</button>
+            <button id="langHiBtn">🇮🇳 हिंदी</button>
+          </div>
+          <button id="mobileMusicBtn" class="icon-btn">🔊 Music</button>
+        </div>
+      </div>
+
+      <div class="image-section">
+        <img id="mobileSceneImg" class="story-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'%3E%3Crect width='400' height='200' fill='%23ffe0b5'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23b97f2e' font-size='18'%3E🌿 Scene 🌿%3C/text%3E%3C/svg%3E" alt="scene">
+        <div class="action-row">
+          <button id="mobilePrevBtn" class="action-btn">◀ Prev</button>
+          <button id="mobileReadAgainBtn" class="action-btn read-again">🔊 Read</button>
+          <button id="mobileNextBtn" class="action-btn">Next ▶</button>
+        </div>
+      </div>
+
+      <div class="story-card"><div class="story-text" id="mobileStoryText"></div></div>
+
+      <div id="moralContainer" class="moral-card" style="display: none;">
+        <div class="moral-title">
+          <span>💎✨</span>
+          <span>🌟 Moral of the Story 🌟</span>
+        </div>
+        <div class="moral-text" id="moralTextDisplay"></div>
+      </div>
+
+      <div class="draw-card">
+        <div class="draw-header">🎨 Magic Drawing Pad (touch & draw) ✨</div>
+        <canvas id="mobileCanvas" width="400" height="180" style="width:100%; height:auto;"></canvas>
+        <div class="draw-tools">
+          <button class="draw-tool-btn" id="mobileClearBtn">🧽 Clear</button>
+          <button class="draw-tool-btn" id="mobileSaveBtn">💾 Save</button>
+          <button class="draw-tool-btn" id="mobileColorBtn">🌈 Color</button>
+        </div>
+      </div>
+
+      <div class="page-indicator" id="mobilePageIndicator">Page 1 / 20</div>
+      <div class="auto-read-badge">🔊 AUTO-READ ACTIVE • Moral appears at story end 🔊</div>
+      <footer>✨ 5 magical stories • 20 pages each • English & Hindi • Every story teaches a moral ✨</footer>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="nav-item" id="navHomeBtn"><span class="nav-emoji">📖</span><span>Story</span></button>
+    <button class="nav-item" id="navDrawBtn"><span class="nav-emoji">🎨</span><span>Draw</span></button>
+    <button class="nav-item" id="navMusicBtn"><span class="nav-emoji">🎵</span><span>Music</span></button>
+  </div>
+</div>
+
+<script>
+  // ======================= KIDS MAGIC STORY WITH PI - 5 STORIES WITH MORALS =======================
+  
+  // ----- STORY 0: Kind Elephant (20 pages) -----
+  const story0_en = Array(19).fill().map((_,i) => 
+    `🐘 Chotu the elephant hears a soft cry.\n🌊 By the river, a little bird is weeping.\n💔 'I lost my nest in the storm.'\n🤗 'Don't worry, little friend!'\n✨ Pi magic helps Chotu wipe her tears.`
+  );
+  story0_en.push("📚 The End! 🎉\n🌈 Kind Elephant learned that kindness and helping others brings true happiness.\n💖 Always lend a hand to those in need!");
+
+  const story0_hi = Array(19).fill().map((_,i) => 
+    `🐘 छोटू हाथी ने मीठी पुकार सुनी।\n🌊 नदी के किनारे एक छोटी चिड़िया रो रही है।\n💔 'तूफान में मेरा घोंसला उड़ गया।'\n🤗 'चिंता मत करो, छोटे दोस्त!'\n✨ पाई जादू से छोटू ने उसके आँसू पोंछे।`
+  );
+  story0_hi.push("📚 समाप्त! 🎉\n🌈 दयालु हाथी ने सीखा कि दया और दूसरों की मदद करना सच्ची खुशी लाता है।\n💖 जरूरतमंदों की मदद करो!");
+
+  // ----- STORY 1: Brave Lion -----
+  const story1_en = Array(19).fill().map((_,i) => 
+    `🦁 Leo the lion hears a cry in the dark.\n🌙 A little deer is stuck in a thorny bush.\n👑 'I will be brave like my father.'\n🤝 Pi magic gives him courage.\n🏆 He rescues the deer and everyone cheers!`
+  );
+  story1_en.push("📚 The End! 🎉\n🦁 Brave Lion learned that true bravery means helping others even when scared.\n💖 Courage comes from the heart!");
+
+  const story1_hi = Array(19).fill().map((_,i) => 
+    `🦁 शेर का बच्चा लियो ने अंधेरे में पुकार सुनी।\n🌙 एक छोटा हिरण कांटेदार झाड़ी में फंसा है।\n👑 'मैं अपने पिता की तरह बहादुर बनूंगा।'\n🤝 पाई जादू ने उसे साहस दिया।\n🏆 वह हिरण को बचाता है और सब जयकार करते हैं!`
+  );
+  story1_hi.push("📚 समाप्त! 🎉\n🦁 बहादुर शेर ने सीखा कि सच्ची बहादुरी का मतलब है डर के बावजूद दूसरों की मदद करना।\n💖 साहस दिल से आता है!");
+
+  // ----- STORY 2: Friendly Dragon -----
+  const story2_en = Array(19).fill().map((_,i) => 
+    `🐉 Draco the dragon breathes rainbow fire.\n🔥 A big forest fire starts suddenly.\n🤗 Villagers were scared of Draco at first.\n💖 Pi magic helps Draco save the forest.\n🌟 Now everyone loves the friendly dragon!`
+  );
+  story2_en.push("📚 The End! 🎉\n🐉 Friendly Dragon learned that you should never judge by appearances.\n💖 A friendly heart can change how others see you!");
+
+  const story2_hi = Array(19).fill().map((_,i) => 
+    `🐉 ड्रैगन ड्रेको इंद्रधनुषी आग छोड़ता है।\n🔥 अचानक एक बड़ी जंगल की आग लग जाती है।\n🤗 गाँव वाले पहले ड्रेको से डरते थे।\n💖 पाई जादू ड्रेको को जंगल बचाने में मदद करता है।\n🌟 अब सब मित्रवत ड्रैगन से प्यार करते हैं!`
+  );
+  story2_hi.push("📚 समाप्त! 🎉\n🐉 मित्रवत ड्रैगन ने सीखा कि दिखावे से कभी मत जज करो।\n💖 एक दोस्ताना दिल लोगों का नज़रिया बदल सकता है!");
+
+  // ----- STORY 3: Speedy Turtle -----
+  const story3_en = Array(19).fill().map((_,i) => 
+    `🐢 Timmy the turtle is very slow.\n💨 But he never gives up on his dreams.\n🏁 He joins the big jungle race.\n🌟 Pi magic gives him clever tricks.\n🎉 Slow and steady wins the race!`
+  );
+  story3_en.push("📚 The End! 🎉\n🐢 Speedy Turtle learned that slow and steady wins the race!\n💖 Never give up, and use your unique strengths!");
+
+  const story3_hi = Array(19).fill().map((_,i) => 
+    `🐢 कछुआ टिमी बहुत धीमा है।\n💨 लेकिन वह अपने सपनों को कभी नहीं छोड़ता।\n🏁 वह बड़ी जंगल दौड़ में भाग लेता है।\n🌟 पाई जादू उसे चतुर तरकीबें देता है।\n🎉 धीरे चलो, मंजिल पाओ!`
+  );
+  story3_hi.push("📚 समाप्त! 🎉\n🐢 तेज़ कछुआ ने सीखा कि धीरे चलो, मंजिल पाओ!\n💖 कभी हार मत मानो, और अपनी ताकत का इस्तेमाल करो!");
+
+  // ----- STORY 4: Rainbow Unicorn -----
+  const story4_en = Array(19).fill().map((_,i) => 
+    `🦄 Una the unicorn has a rainbow mane.\n🌈 She spreads happiness wherever she goes.\n🌧️ A grey cloud covers the magical land.\n✨ Pi magic makes her horn shine bright.\n💛 The horn brings back all the colours!`
+  );
+  story4_en.push("📚 The End! 🎉\n🦄 Rainbow Unicorn learned that spreading happiness makes the world brighter!\n💖 Your kindness can brighten anyone's day!");
+
+  const story4_hi = Array(19).fill().map((_,i) => 
+    `🦄 यूना गेंडा का इंद्रधनुषी अयाल है।\n🌈 वह जहाँ जाती है खुशियाँ बिखेरती है।\n🌧️ एक भूरा बादल जादुई भूमि को ढक लेता है।\n✨ पाई जादू उसके सींग को चमका देता है।\n💛 सींग सारे रंग वापस लाता है!`
+  );
+  story4_hi.push("📚 समाप्त! 🎉\n🦄 इंद्रधनुषी गेंडा ने सीखा कि खुशियाँ बिखेरने से दुनिया रोशन हो जाती है!\n💖 तुम्हारी दया किसी का दिन रोशन कर सकती है!");
+
+  // Story Titles
+  const storyTitles = {
+    en: ["🐘 Kind Elephant", "🦁 Brave Lion", "🐉 Friendly Dragon", "🐢 Speedy Turtle", "🦄 Rainbow Unicorn"],
+    hi: ["🐘 दयालु हाथी", "🦁 बहादुर शेर", "🐉 मित्रवत ड्रैगन", "🐢 तेज़ कछुआ", "🦄 इंद्रधनुषी गेंडा"]
+  };
+
+  // Moral Messages for display
+  const moralMessages = {
+    en: [
+      "✨ KINDNESS & HELPING: Always lend a hand to those in need. Kindness makes the world a better place! ✨",
+      "✨ TRUE BRAVERY: Being brave means helping others even when you're scared. Courage comes from the heart! ✨",
+      "✨ DON'T JUDGE BY APPEARANCES: Never judge by how someone looks. A friendly heart can change everything! ✨",
+      "✨ PERSEVERANCE & PATIENCE: Slow and steady wins the race! Never give up, and use your unique strengths! ✨",
+      "✨ SPREAD HAPPINESS: Share joy wherever you go. Your kindness can brighten anyone's day! ✨"
+    ],
+    hi: [
+      "✨ दया और मदद: जरूरतमंदों की मदद करो। दया से दुनिया बेहतर बनती है! ✨",
+      "✨ सच्ची बहादुरी: बहादुर बनने का मतलब है डर के बावजूद दूसरों की मदद करना। साहस दिल से आता है! ✨",
+      "✨ दिखावे से मत जज करो: कभी किसी के दिखावे से मत जज करो। एक दोस्ताना दिल लोगों का नज़रिया बदल सकता है! ✨",
+      "✨ लगन और धैर्य: धीरे चलो, मंजिल पाओ! कभी हार मत मानो, और अपनी ताकत का इस्तेमाल करो! ✨",
+      "✨ खुशियाँ बिखेरो: जहाँ जाओ खुशियाँ बिखेरो। तुम्हारी दया किसी का दिन रोशन कर सकती है! ✨"
+    ]
+  };
+
+  const fullData = {
+    en: [story0_en, story1_en, story2_en, story3_en, story4_en],
+    hi: [story0_hi, story1_hi, story2_hi, story3_hi, story4_hi]
+  };
+
+  function getSceneImage(storyIdx, pageNum) {
+    const emojis = ["🐘🌿", "🦁🌙", "🐉🔥", "🐢🏁", "🦄🌈"];
+    const bgColors = ["#c9e4ff", "#ffe1b9", "#ffddbb", "#fbe5c2", "#ffefcc"];
+    const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 220'><rect width='500' height='220' fill='${bgColors[storyIdx%5]}' rx='30'/><text x='50%' y='50%' font-size='70' text-anchor='middle'>${emojis[storyIdx%5]}</text><text x='50%' y='80%' font-size='18' fill='#7b4a2e' text-anchor='middle'>✨ Pi Magic Page ${pageNum} ✨</text></svg>`;
+    return "data:image/svg+xml," + encodeURIComponent(svg);
+  }
+
+  // DOM elements
+  const coverDiv = document.getElementById('coverView');
+  const mainUi = document.getElementById('mainAppUi');
+  const startBtn = document.getElementById('androidStartBtn');
+  const storySelect = document.getElementById('mobileStorySelect');
+  const storyTitleSpan = document.getElementById('mobileStoryTitle');
+  const sceneImg = document.getElementById('mobileSceneImg');
+  const storyTextDiv = document.getElementById('mobileStoryText');
+  const prevBtn = document.getElementById('mobilePrevBtn');
+  const nextBtn = document.getElementById('mobileNextBtn');
+  const readAgainBtn = document.getElementById('mobileReadAgainBtn');
+  const pageIndicator = document.getElementById('mobilePageIndicator');
+  const musicBtn = document.getElementById('mobileMusicBtn');
+  const moralContainer = document.getElementById('moralContainer');
+  const moralTextDisplay = document.getElementById('moralTextDisplay');
+  const langEnBtn = document.getElementById('langEnBtn');
+  const langHiBtn = document.getElementById('langHiBtn');
+
+  let currentLang = 'en';
+  let currentStory = 0;
+  let currentPage = 0;
+
+  // Audio setup
+  let audioCtx = null;
+  let musicInterval = null;
+  let bgMusicActive = true;
+
+  function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+
+  function playPageSound() {
+    if(audioCtx) { 
+      if(audioCtx.state === 'suspended') audioCtx.resume(); 
+      const now = audioCtx.currentTime; 
+      const osc = audioCtx.createOscillator(); 
+      const gain = audioCtx.createGain(); 
+      osc.connect(gain); 
+      gain.connect(audioCtx.destination); 
+      osc.frequency.value = 880; 
+      gain.gain.setValueAtTime(0.08, now); 
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.2); 
+      osc.start(); 
+      osc.stop(now + 0.18); 
+    } 
+  }
+
+  function startBgMusic() {
+    if(!audioCtx || !bgMusicActive) return;
+    if(musicInterval) clearInterval(musicInterval);
+    function play() {
+      if(!bgMusicActive || !audioCtx) return;
+      const now = audioCtx.currentTime;
+      [523, 587, 659, 523].forEach((f, i) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.value = f;
+        gain.gain.setValueAtTime(0.05, now + i * 0.25);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.25 + 0.3);
+        osc.start(now + i * 0.25);
+        osc.stop(now + i * 0.25 + 0.28);
+      });
+    }
+    play();
+    musicInterval = setInterval(() => { if(bgMusicActive && mainUi.style.display !== 'none') play(); }, 5500);
+  }
+
+  function stopBgMusic() { if(musicInterval) clearInterval(musicInterval); musicInterval = null; }
+  function toggleMusic() { bgMusicActive = !bgMusicActive; if(bgMusicActive && audioCtx) startBgMusic(); else stopBgMusic(); musicBtn.innerHTML = bgMusicActive ? "🔊 Music" : "🔇 Music"; }
+
+  function readAloud() {
+    if(!('speechSynthesis' in window)) {
+      alert("Sorry, your browser doesn't support speech synthesis.");
+      return;
+    }
+    window.speechSynthesis.cancel();
+    let rawText = fullData[currentLang][currentStory][currentPage];
+    let cleanText = rawText.replace(/[🐘🌊🐦🦁🐉🐢🦄🌈⭐✨💕❤️🤗💔]/g, '');
+    cleanText = cleanText.replace(/\n/g, '. ');
+    cleanText = cleanText.replace(/\.\./g, '.');
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.lang = currentLang === 'en' ? 'en-US' : 'hi-IN';
+    utterance.rate = 0.85;
+    utterance.pitch = 1.1;
+    utterance.volume = 1;
+    window.speechSynthesis.speak(utterance);
+    readAgainBtn.style.transform = 'scale(0.95)';
+    setTimeout(() => { readAgainBtn.style.transform = ''; }, 150);
+  }
+
+  function updateUI() {
+    const storyLines = fullData[currentLang][currentStory][currentPage].split('\n');
+    let html = '';
+    storyLines.forEach(line => { if(line.trim()) html += `<p>${line.trim()}</p>`; });
+    storyTextDiv.innerHTML = html;
+    sceneImg.src = getSceneImage(currentStory, currentPage + 1);
+    pageIndicator.innerText = `📖 Page ${currentPage+1}/20 | ✨ Pi Magic ✨ | ${storyTitles[currentLang][currentStory]}`;
+    storyTitleSpan.innerText = storyTitles[currentLang][currentStory];
+    prevBtn.disabled = (currentPage === 0);
+    nextBtn.disabled = (currentPage === 19);
+    
+    if(currentLang === 'en') {
+      langEnBtn.classList.add('active');
+      langHiBtn.classList.remove('active');
+    } else {
+      langHiBtn.classList.add('active');
+      langEnBtn.classList.remove('active');
+    }
+    
+    if(currentPage === 19) {
+      moralContainer.style.display = 'block';
+      moralTextDisplay.innerHTML = moralMessages[currentLang][currentStory];
+    } else {
+      moralContainer.style.display = 'none';
+    }
+    setTimeout(() => { readAloud(); }, 200);
+  }
+
+  function changeStory() { currentStory = parseInt(storySelect.value); currentPage = 0; updateUI(); playPageSound(); }
+  function nextPage() { if(currentPage < 19) { currentPage++; updateUI(); playPageSound(); } }
+  function prevPage() { if(currentPage > 0) { currentPage--; updateUI(); playPageSound(); } }
+  function setLanguage(lang) { if(fullData[lang]) { currentLang = lang; currentPage = 0; updateUI(); playPageSound(); } }
+
+  startBtn.addEventListener('click', () => { 
+    coverDiv.style.display = 'none'; 
+    mainUi.style.display = 'flex'; 
+    initAudio(); 
+    if(bgMusicActive) startBgMusic(); 
+    resizeCanvas(); 
+    updateUI(); 
+  });
+  
+  storySelect.addEventListener('change', changeStory);
+  prevBtn.addEventListener('click', prevPage);
+  nextBtn.addEventListener('click', nextPage);
+  readAgainBtn.addEventListener('click', readAloud);
+  musicBtn.addEventListener('click', toggleMusic);
+  langEnBtn.addEventListener('click', () => setLanguage('en'));
+  langHiBtn.addEventListener('click', () => setLanguage('hi'));
+  
+  document.getElementById('navHomeBtn').addEventListener('click', () => document.querySelector('.app-content').scrollTop = 0);
+  document.getElementById('navDrawBtn').addEventListener('click', () => document.querySelector('.draw-card').scrollIntoView({ behavior: 'smooth' }));
+  document.getElementById('navMusicBtn').addEventListener('click', () => toggleMusic());
+
+  // Drawing canvas
+  const canvas = document.getElementById('mobileCanvas');
+  const ctx = canvas.getContext('2d');
+  let drawing = false, currentColor = '#FF6B6B';
+  
+  function resizeCanvas() { 
+    canvas.width = 400; 
+    canvas.height = 180; 
+    ctx.fillStyle = '#FFFFFF'; 
+    ctx.fillRect(0, 0, canvas.width, canvas.height); 
+    ctx.strokeStyle = currentColor; 
+    ctx.lineWidth = 4; 
+    ctx.lineCap = 'round'; 
+  }
+  
+  function getCoords(e) { 
+    const rect = canvas.getBoundingClientRect(); 
+    const sx = canvas.width/rect.width; 
+    const sy = canvas.height/rect.height; 
+    let cx,cy; 
+    if(e.touches){ cx=e.touches[0].clientX; cy=e.touches[0].clientY; } 
+    else { cx=e.clientX; cy=e.clientY; } 
+    let x=(cx-rect.left)*sx; let y=(cy-rect.top)*sy; 
+    x=Math.min(Math.max(0,x),canvas.width); y=Math.min(Math.max(0,y),canvas.height); 
+    return {x,y}; 
+  }
+  
+  function start(e) { drawing=true; const p=getCoords(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(p.x+0.5,p.y+0.5); ctx.stroke(); ctx.beginPath(); ctx.moveTo(p.x,p.y); e.preventDefault(); }
+  function draw(e) { if(!drawing) return; e.preventDefault(); const p=getCoords(e); ctx.lineTo(p.x,p.y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(p.x,p.y); }
+  function endDraw() { drawing=false; ctx.beginPath(); }
+  function clearCanvas() { ctx.fillStyle='#FFFFFF'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.strokeStyle=currentColor; }
+  function saveDrawing() { const a=document.createElement('a'); a.download=`pi_magic_story_${currentStory+1}_page_${currentPage+1}.png`; a.href=canvas.toDataURL(); a.click(); }
+  function changeColor() { const cols=['#FF6B6B','#4D96FF','#FFC145','#6BCB77','#FF93AC','#9B5DE5']; currentColor=cols[Math.floor(Math.random()*cols.length)]; ctx.strokeStyle=currentColor; }
+  
+  canvas.addEventListener('mousedown',start); canvas.addEventListener('mousemove',draw); canvas.addEventListener('mouseup',endDraw); canvas.addEventListener('mouseleave',endDraw);
+  canvas.addEventListener('touchstart',start,{passive:false}); canvas.addEventListener('touchmove',draw,{passive:false}); canvas.addEventListener('touchend',endDraw);
+  document.getElementById('mobileClearBtn').addEventListener('click', clearCanvas);
+  document.getElementById('mobileSaveBtn').addEventListener('click', saveDrawing);
+  document.getElementById('mobileColorBtn').addEventListener('click', changeColor);
+  resizeCanvas();
+</script>
+</body>
+</html>
